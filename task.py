@@ -36,7 +36,7 @@ class Kredit(Hesab):
         self.illik = 12
         self.kredit_meblegi = 0
         self.odenilen_mebleg = 0
-        self.borc = self.kredit_meblegi - self.odenilen_mebleg
+        # self.borc = self.kredit_meblegi - self.odenilen_mebleg
         self.ayliq_odenis = self.kredit_meblegi / self.illik
         self.count = 1
         self.aylar_odenis = [(self.ayliq_odenis * k) for k in [*range(1, 13)]]
@@ -64,6 +64,8 @@ class Kredit(Hesab):
     ##
     def krediti_goster(self):
         if self.is_allowed:
+            self.borc = self.kredit_meblegi - self.odenilen_mebleg
+
             print(f"Kredi borcunuz:{self.borc}")
             return True
         else:
@@ -72,12 +74,12 @@ class Kredit(Hesab):
             return False
 
     def krediti_odemek(self, daxiledilen_mebleg):
+        self.borc = self.kredit_meblegi - self.odenilen_mebleg
         if self.is_allowed:
             if (
                 self.odenilen_mebleg >= self.aylar_odenis[self.count - 1]
             ) or self.odenilen_mebleg == 0:
                 if daxiledilen_mebleg <= self.balans:
-                    # print(f"ayliq odenis: {self.ayliq_odenis:.2f}")
 
                     if daxiledilen_mebleg >= self.ayliq_odenis:
 
@@ -124,9 +126,8 @@ class Kredit(Hesab):
 
 kredit = Kredit(10, 2000)
 kredit.kredit_goturmek(1200)
-
-
+kredit.krediti_goster()
 kredit.krediti_odemek(1150)
 kredit.krediti_odemek(50)
-
-
+kredit.krediti_goster()
+kredit.krediti_odemek(50)
